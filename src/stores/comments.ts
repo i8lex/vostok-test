@@ -11,12 +11,8 @@ export const useCommentsStore = defineStore("comments", {
   }),
 
   actions: {
-    async loadComments(postId: number) {
-      // Отримати коментарі для вказаного поста та оновити this.comments
-    },
+    async loadComments(postId: number) {},
 
-    async addComment(newComment: Comment) {
-      // Додати новий коментар та оновити this.comments
-    },
+    async addComment(newComment: Comment) {},
   },
 });
