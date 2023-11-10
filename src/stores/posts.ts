@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { URL } from "@/constants";
+
 interface Post {
   id: number;
   title: string;
@@ -16,15 +17,13 @@ export const usePostsStore = defineStore("posts", {
     async loadPosts() {
       const response = await fetch(`${URL}/posts`);
       if (response.ok) {
-        const data = await response.json();
-        this.posts = data;
+        this.posts = await response.json();
       }
     },
     async loadPost(id: number) {
       const response = await fetch(`${URL}/posts/${id}`);
       if (response.ok) {
-        const data = await response.json();
-        this.post = data;
+        this.post = await response.json();
       }
     },
 

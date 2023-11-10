@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <h4 class="text-h4 text-weight-bolder text-white">Пости Vostok Bank</h4>
+    <h4 class="text-h4 text-weight-bolder text-center text-white">
+      Пости Vostok Bank
+    </h4>
     <PostCard />
     <PromptModal />
     <PaginationComponent />

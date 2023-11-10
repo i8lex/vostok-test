@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <q-card
-      v-for="post in postsStore.posts"
+      v-for="post in paginatedPosts"
       :key="post.id"
       flat
       bordered
@@ -72,7 +72,7 @@
 
 <script>
 import { usePostsStore } from "@/stores/posts";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted } from "vue";
 
 export default {
   name: "PostCard",
@@ -94,6 +94,25 @@ export default {
     },
     onMouseLeave() {
       this.hoveredPostId = null;
+    },
+  },
+  computed: {
+    paginatedPosts() {
+      const currentPage = parseInt(this.$route.query.page) || 1;
+      const postsPerPage = 10;
+      const startIndex = (currentPage - 1) * postsPerPage;
+      const endIndex = startIndex + postsPerPage;
+      return this.postsStore.posts.slice(startIndex, endIndex);
+    },
+  },
+  watch: {
+    paginatedPosts() {
+      const currentPage = parseInt(this.$route.query.page);
+      if (this.paginatedPosts.length === 0) {
+        this.$router.push({
+          query: { page: currentPage > 1 ? currentPage - 1 : 1 },
+        });
+      }
     },
   },
 };
