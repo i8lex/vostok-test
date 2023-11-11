@@ -3,46 +3,36 @@
     <q-pagination
       v-model="currentPage"
       color="brown-5"
-      :max="getPageQuantity"
+      :max="getPageQuantity()"
       :max-pages="6"
       boundary-numbers
-      @click="setRouterQuery"
+      @click="navigateToPage"
     />
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { usePostsStore } from "@/stores/posts";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "PaginationComponent",
-  setup() {
-    const postsStore = usePostsStore();
-    const router = useRouter();
-    const currentPage = ref(1);
-    onMounted(() => {
-      currentPage.value = router.currentRoute.value.query.page || 1;
-    });
-    return {
-      postsStore,
-      currentPage,
-    };
-  },
-  computed: {
-    getPageQuantity() {
-      return Math.ceil(this.postsStore.posts.length / 10);
+const postsStore = usePostsStore();
+const router = useRouter();
+const currentPage = ref(1);
+
+onMounted(() => {
+  currentPage.value = router.currentRoute.value.query.page
+    ? parseInt(router.currentRoute.value.query.page.toString())
+    : 1;
+});
+const getPageQuantity = () => {
+  return Math.ceil(postsStore.posts.length / 10);
+};
+const navigateToPage = () => {
+  router.push({
+    query: {
+      page: currentPage.value,
     },
-  },
-  methods: {
-    setRouterQuery() {
-      this.$router.push({
-        query: {
-          page: this.currentPage,
-        },
-      });
-    },
-  },
+  });
 };
 </script>

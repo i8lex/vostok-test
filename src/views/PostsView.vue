@@ -3,22 +3,21 @@
     <h4 class="text-h4 text-weight-bolder text-center text-white">
       Пости Vostok Bank
     </h4>
-    <PostCard />
-    <PromptModal />
+    <PostsCards />
+    <AddPostModal />
     <PaginationComponent />
   </div>
 </template>
 
-<script lang="ts">
-import PostCard from "@/components/PostCard.vue";
-import PromptModal from "@/components/modal/PromptModal.vue";
+<script setup lang="ts">
+import PostsCards from "@/components/PostsCardsComponent.vue";
+import AddPostModal from "@/components/modal/AddPostModal.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
-export default {
-  name: "PostsView",
-  components: {
-    PaginationComponent,
-    PostCard,
-    PromptModal,
-  },
-};
+import { usePostsStore } from "@/stores/posts";
+import { onBeforeMount } from "vue";
+
+const postsStore = usePostsStore();
+onBeforeMount(() => {
+  postsStore.loadPosts();
+});
 </script>

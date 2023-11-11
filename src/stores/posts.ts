@@ -1,16 +1,24 @@
 import { defineStore } from "pinia";
 import { URL } from "@/constants";
 
-interface Post {
-  id: number;
+export interface Post {
+  id?: number;
   title: string;
   description: string;
   author: string;
+  comments?: Comment[];
+}
+
+interface Comment {
+  postId?: string;
+  author: string;
+  comment: string;
+  date: Date;
 }
 export const usePostsStore = defineStore("posts", {
   state: () => ({
     posts: [] as Post[],
-    post: null,
+    post: {} as Post,
   }),
 
   actions: {
@@ -21,9 +29,13 @@ export const usePostsStore = defineStore("posts", {
       }
     },
     async loadPost(id: number) {
-      const response = await fetch(`${URL}/posts/${id}`);
+      const response = await fetch(`${URL}/posts/${id}?_embed=comments`);
       if (response.ok) {
         this.post = await response.json();
+        const res = await fetch(`${URL}/posts/${id}/comments`);
+        if (res.ok) {
+          this.post.comments = await res.json();
+        }
       }
     },
 
@@ -38,6 +50,19 @@ export const usePostsStore = defineStore("posts", {
       if (response.ok) {
         const data = await response.json();
         this.posts.push(data);
+      }
+    },
+    async addComment(newComment: Comment, postId: string) {
+      const response = await fetch(`${URL}/posts/${postId}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newComment),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        this.post.comments?.push(data);
       }
     },
 
