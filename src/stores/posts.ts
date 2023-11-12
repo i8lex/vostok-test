@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { URL } from "@/constants";
 
 export interface Post {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   author: string;
@@ -10,7 +10,8 @@ export interface Post {
 }
 
 interface Comment {
-  postId?: string;
+  id: number;
+  postId: string;
   author: string;
   comment: string;
   date: Date;
@@ -39,7 +40,7 @@ export const usePostsStore = defineStore("posts", {
       }
     },
 
-    async addPost(newPost: Post) {
+    async addPost(newPost: Partial<Post>) {
       const response = await fetch(`${URL}/posts`, {
         method: "POST",
         headers: {
@@ -52,7 +53,7 @@ export const usePostsStore = defineStore("posts", {
         this.posts.push(data);
       }
     },
-    async addComment(newComment: Comment, postId: string) {
+    async addComment(newComment: Partial<Comment>, postId: string) {
       const response = await fetch(`${URL}/posts/${postId}/comments`, {
         method: "POST",
         headers: {

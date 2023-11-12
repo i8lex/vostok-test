@@ -6,7 +6,7 @@
       flat
       bordered
       class="posts__card"
-      @mouseenter="onMouseEnter(post.id!)"
+      @mouseenter="onMouseEnter(post.id)"
       @mouseleave="onMouseLeave"
     >
       <q-btn
@@ -18,7 +18,7 @@
         icon="delete"
         v-if="hoveredPostId === post.id"
       />
-      <div @click="navigateToPage(post.id ? post.id : 1)">
+      <div @click="navigateToPage(post.id)">
         <q-card-section>
           <h6 class="text-h6 text-white text-weight-bolder q-ma-none">
             {{ post.title }}

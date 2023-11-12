@@ -9,10 +9,11 @@
       <div class="absolute-top-left q-ma-xl-lg sm-hide xs-hide">
         <q-btn round color="brown-5" icon="reply" @click="navigateToPage" />
       </div>
-      <h4>Деталі поста #{{ postsStore.post && postsStore.post.id }}</h4>
+      <h4>Деталі поста #{{ postsStore.post.id }}</h4>
     </div>
     <PostCardComponent />
     <AddCommentModal />
+    <CommentsComponent />
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import { usePostsStore } from "@/stores/posts";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
 import AddCommentModal from "@/components/modal/AddCommentModal.vue";
+import CommentsComponent from "@/components/CommentsComponent.vue";
 
 const router = useRouter();
 const postsStore = usePostsStore();

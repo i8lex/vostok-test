@@ -16,5 +16,5 @@ export default {
     brand: {
       darkPage: "#272b33",
     },
-  } as any,
+  } as never,
 };

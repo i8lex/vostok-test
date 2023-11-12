@@ -1,31 +1,100 @@
 <template>
-  <q-card
-    class="comment__card text-white"
-    style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
-  >
-    <q-card-section>
-      <div class="text-h6">Our Changing Planet</div>
-      <div class="text-subtitle2">by John Doe</div>
-    </q-card-section>
+  <div class="flex justify-center q-mb-lg">
+    <div class="comment__container">
+      <q-intersection
+        v-for="comment in postStore.post.comments"
+        transition="scale"
+        :threshold="0.5"
+        :key="comment.id"
+        class="comment__wrapper"
+        @click="openDialog[comment.id] = true"
+      >
+        <q-card dark flat bordered class="q-ma-sm comment__card">
+          <q-card-section>
+            <div class="text-subtitle2">Comment by {{ comment.author }}</div>
+          </q-card-section>
+          <q-card-section>
+            <p class="text-secondary comment__text">
+              {{ comment.comment }}
+            </p>
+          </q-card-section>
+        </q-card>
+      </q-intersection>
+      <q-dialog
+        v-for="comment in postStore.post.comments"
+        :key="comment.id"
+        v-model="openDialog[comment.id]"
+      >
+        <q-card dark>
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">Comment by {{ comment.author }}</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
 
-    <q-card-section class="q-pt-none">
-      <!--      {{ lorem }}-->
-    </q-card-section>
-  </q-card>
+          <q-card-section>
+            {{ comment.comment }}
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.comment__card {
-  width: 70%;
+.comment {
+  &__card {
+    height: 108px;
+    overflow: hidden;
+    //text-overflow: ellipsis;
+    white-space: nowrap;
+
+    //&:hover {
+    //  height: fit-content;
+    //  white-space: normal;
+    //  z-index: 20;
+    //}
+  }
+  &__wrapper {
+    height: 108px;
+    width: 70dvh;
+    //&:hover {
+    //  height: fit-content;
+    //  white-space: normal;
+    //  z-index: 20;
+    //}
+  }
+  &__text {
+    overflow: hidden;
+    width: 65dvh;
+    text-overflow: ellipsis;
+  }
+}
+@media screen and (max-width: 780px) {
+  .comment {
+    &__wrapper {
+      width: 400px;
+    }
+    &__text {
+      width: 370px;
+    }
+  }
+}
+@media screen and (max-width: 400px) {
+  .comment {
+    &__wrapper {
+      width: 280px;
+    }
+    &__text {
+      width: 250px;
+    }
+  }
 }
 </style>
 <script setup lang="ts">
 import { usePostsStore } from "@/stores/posts";
+import { ref } from "vue";
 
-export default {
-  data() {
-    const postStore = usePostsStore();
-    return {};
-  },
-};
+const openDialog = ref<{ [key: number]: boolean }>({});
+const postStore = usePostsStore();
 </script>
