@@ -1,15 +1,13 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-btn label="Add post" color="primary" @click="prompt = true" />
-
-    <q-dialog v-model="prompt" persistent>
+    <q-dialog v-model="showDialog" persistent>
       <q-card style="min-width: 350px; background-color: #272b33">
         <q-card-section>
           <div class="text-h6 text-white">Add post</div>
         </q-card-section>
 
         <div class="q-pa-md" style="max-width: 300px">
-          <form
+          <q-form
             @submit.prevent.stop="onSubmit"
             @cancel.prevent.stop="onCancel"
             class="q-gutter-md"
@@ -57,7 +55,7 @@
                 class="q-ml-sm text-white"
               />
             </div>
-          </form>
+          </q-form>
         </div>
       </q-card>
     </q-dialog>
@@ -66,8 +64,24 @@
 
 <script setup lang="ts">
 import { useQuasar, QInput } from "quasar";
-import { ref, Ref } from "vue";
-import { usePostsStore } from "@/stores/posts";
+import { defineProps, ref, Ref, watch, defineEmits } from "vue";
+
+const props = defineProps({
+  prompt: {
+    type: Boolean,
+  },
+});
+
+const showDialog = ref(props.prompt);
+
+const emit = defineEmits(["update:prompt", "submit"]);
+
+watch(
+  () => props.prompt,
+  (newValue) => {
+    showDialog.value = newValue;
+  }
+);
 
 const $q = useQuasar();
 const author = ref("");
@@ -76,7 +90,7 @@ const description = ref("");
 const descriptionRef: Ref<QInput | null> = ref(null);
 const title = ref("");
 const titleRef: Ref<QInput | null> = ref(null);
-const prompt = ref(false);
+
 const authorRules = [
   (val: string) => (val && val.length > 0) || "Please type something",
   (val: string) => (val && val.length >= 3) || "Minimum 3 characters",
@@ -94,8 +108,6 @@ const titleRules = [
 ];
 
 const onSubmit = () => {
-  authorRef.value?.validate();
-  const postsStore = usePostsStore();
   if (
     authorRef.value?.hasError ||
     descriptionRef.value?.hasError ||
@@ -106,7 +118,7 @@ const onSubmit = () => {
       message: "You need to fill all fields",
     });
   } else {
-    postsStore.addPost({
+    emit("submit", {
       title: title.value,
       description: description.value,
       author: author.value,
@@ -117,13 +129,13 @@ const onSubmit = () => {
       message: "Successfully added",
     });
     resetForm();
-    prompt.value = false;
+    emit("update:prompt", false);
   }
 };
 
 const onCancel = () => {
   resetForm();
-  prompt.value = false;
+  emit("update:prompt", false);
 };
 
 const resetForm = () => {

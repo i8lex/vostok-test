@@ -1,21 +1,7 @@
 import { defineStore } from "pinia";
 import { URL } from "@/constants";
+import { Post, Comment } from "@/types";
 
-export interface Post {
-  id: number;
-  title: string;
-  description: string;
-  author: string;
-  comments?: Comment[];
-}
-
-interface Comment {
-  id: number;
-  postId: string;
-  author: string;
-  comment: string;
-  date: Date;
-}
 export const usePostsStore = defineStore("posts", {
   state: () => ({
     posts: [] as Post[],

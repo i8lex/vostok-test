@@ -1,13 +1,13 @@
 <template>
   <div class="post">
     <div class="q-ma-md-xs xl-hide lg-hide md-hide">
-      <q-btn round color="brown-5" icon="reply" @click="navigateToPage" />
+      <q-btn round color="brown-5" icon="reply" @click="router.back" />
     </div>
     <div
       class="text-h4 text-weight-bolder text-center text-white q-ma-xl-lg q-ma-md-xs relative-position window-widt"
     >
       <div class="absolute-top-left q-ma-xl-lg sm-hide xs-hide">
-        <q-btn round color="brown-5" icon="reply" @click="navigateToPage" />
+        <q-btn round color="brown-5" icon="reply" @click="router.back" />
       </div>
       <h4>Деталі поста #{{ postsStore.post.id }}</h4>
     </div>
@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .post {
   margin-top: 20px;
 }
@@ -37,10 +37,4 @@ onMounted(() => {
   const { id: pageId } = router.currentRoute.value.params;
   postsStore.loadPost(+pageId);
 });
-
-const navigateToPage = () => {
-  router.push({
-    path: `/?page=1`,
-  });
-};
 </script>

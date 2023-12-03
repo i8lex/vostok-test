@@ -46,23 +46,11 @@
   &__card {
     height: 108px;
     overflow: hidden;
-    //text-overflow: ellipsis;
     white-space: nowrap;
-
-    //&:hover {
-    //  height: fit-content;
-    //  white-space: normal;
-    //  z-index: 20;
-    //}
   }
   &__wrapper {
     height: 108px;
     width: 70dvh;
-    //&:hover {
-    //  height: fit-content;
-    //  white-space: normal;
-    //  z-index: 20;
-    //}
   }
   &__text {
     overflow: hidden;

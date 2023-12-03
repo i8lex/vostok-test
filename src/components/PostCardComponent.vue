@@ -2,27 +2,27 @@
   <q-card flat bordered class="post__card">
     <q-card-section>
       <h6 class="text-h6 text-white text-weight-bolder q-ma-none">
-        {{ postsStore.post.title }}
+        {{ post.title }}
       </h6>
     </q-card-section>
     <q-card-section class="q-pt-none">
       <p class="text-blue-grey-4 q-mb-none">Автор поста</p>
       <p class="text-blue-grey-1 q-mb-none">
-        {{ postsStore.post.author }}
+        {{ post.author }}
       </p>
     </q-card-section>
     <q-card-section class="q-pt-none">
       <p class="text-blue-grey-4 q-mb-none">Опис</p>
       <p class="text-blue-grey-1 q-mb-none">
-        {{ postsStore.post.description }}
+        {{ post.description }}
       </p>
     </q-card-section>
   </q-card>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .post__card {
-  background-color: #3c3e44 !important;
+  background-color: #3c3e44;
   width: 70dvh;
 
   display: flex;
@@ -44,6 +44,8 @@
 
 <script setup lang="ts">
 import { usePostsStore } from "@/stores/posts";
+import { storeToRefs } from "pinia";
 
 const postsStore = usePostsStore();
+const { post } = storeToRefs(postsStore);
 </script>
