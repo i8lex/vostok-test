@@ -39,7 +39,7 @@ export const usePostsStore = defineStore("posts", {
         this.posts.push(data);
       }
     },
-    async addComment(newComment: Partial<Comment>, postId: string) {
+    async addComment(newComment: Partial<Comment>, postId: number) {
       const response = await fetch(`${URL}/posts/${postId}/comments`, {
         method: "POST",
         headers: {
